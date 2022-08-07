@@ -1,0 +1,19 @@
+{
+  "name": "backend-machine-vision",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anggadsa/backend-machine-vision.git"
+  },
+  "author": "Angga Dwi Satria",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anggadsa/backend-machine-vision/issues"
+  },
+  "homepage": "https://github.com/anggadsa/backend-machine-vision#readme"
+}
