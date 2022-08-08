@@ -1,11 +1,15 @@
 const { token } = require("morgan");
 const { User } = require("../models");
+<<<<<<< HEAD
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+=======
+>>>>>>> 11c6e2f8f7ec77244adc038c3f2cb32209ebf31b
 
 const register = async (req, res) => {
   try {
     const { name, username, email, password } = req.body;
+<<<<<<< HEAD
     const foundUsername = await User.findOne({ where: { username: username } });
     const foundEmail = await User.findOne({ where: { email: email } });
     if (foundEmail || foundUsername)
@@ -13,6 +17,11 @@ const register = async (req, res) => {
     const splitUrl = req.file.path.split("\\");
     const url = splitUrl[splitUrl.length - 1];
     const photo = `${process.env.PATH_URL}${url}`;
+=======
+    const splitUrl = req.file.path.split("\\");
+    const url = splitUrl[splitUrl.length - 1];
+    const photo = `C:/Users/asus/OneDrive/Desktop/angga/backend-machine-vision/public/images/${url}`;
+>>>>>>> 11c6e2f8f7ec77244adc038c3f2cb32209ebf31b
     const userData = {
       email: email,
       username: username,
@@ -25,6 +34,7 @@ const register = async (req, res) => {
     return res.status(201).json({
       success: true,
       message: "Your account has been successfully created",
+<<<<<<< HEAD
       data: {
         email: email,
         username: username,
@@ -34,6 +44,11 @@ const register = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+=======
+      data: userData,
+    });
+  } catch (error) {
+>>>>>>> 11c6e2f8f7ec77244adc038c3f2cb32209ebf31b
     return res.status(400).json({
       success: false,
       message: "Your account cannot be created",
@@ -49,7 +64,10 @@ const login = async (req, res) => {
     if (foundUser) {
       // Check profile
       const isValidPassword = bcrypt.compareSync(password, foundUser.password);
+<<<<<<< HEAD
       console.log(isValidPassword);
+=======
+>>>>>>> 11c6e2f8f7ec77244adc038c3f2cb32209ebf31b
       if (isValidPassword) {
         const payload = {
           id: foundUser.id,
@@ -57,6 +75,7 @@ const login = async (req, res) => {
           email: foundUser.email,
         };
         const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+<<<<<<< HEAD
           expiresIn: "100s",
         });
         return res.status(200).json({
@@ -111,10 +130,28 @@ const logout = async (req, res) => {
       success: false,
       message: error.message,
       data: null,
+=======
+          expiresIn: "1h",
+        });
+      }
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Sukses mengakses endpoint",
+      data: {
+        token: token,
+      },
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: "Gagal mengakses endpoint",
+>>>>>>> 11c6e2f8f7ec77244adc038c3f2cb32209ebf31b
     });
   }
 };
 
+<<<<<<< HEAD
 const getUserId = async (req, res) => {
   const id = req.body.id;
   const options = {
@@ -199,12 +236,40 @@ const updatePassword = async (req, res) => {
     });
   }
 };
+=======
+const getImage = async (req, res) => {
+  const imageUrl = req.params.url;
+  return console.log(imageUrl);
+};
+
+const createPost = async (req, res) => {};
+
+const listPost = async (req, res) => {};
+
+const listPostByUserId = async (req, res) => {};
+
+const getPostById = async (req, res) => {};
+
+const updatePost = async (req, res) => {};
+
+const deletePost = async (req, res) => {};
+
+const like = async (req, res) => {};
+
+const unLike = async (req, res) => {};
+
+const uploadImage = async (req, res) => {};
+>>>>>>> 11c6e2f8f7ec77244adc038c3f2cb32209ebf31b
 
 module.exports = {
   register,
   login,
+<<<<<<< HEAD
   logout,
   getUserId,
   updateUser,
   updatePassword,
+=======
+  getImage,
+>>>>>>> 11c6e2f8f7ec77244adc038c3f2cb32209ebf31b
 };

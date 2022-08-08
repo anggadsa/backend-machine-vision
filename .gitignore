@@ -2,5 +2,9 @@ node_modules
 .env
 dbModels.txt
 *.jpg
+<<<<<<< HEAD
 *.png
 
+=======
+*.png
+>>>>>>> 11c6e2f8f7ec77244adc038c3f2cb32209ebf31b

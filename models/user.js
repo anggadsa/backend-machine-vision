@@ -1,6 +1,9 @@
 "use strict";
 const { Model } = require("sequelize");
+<<<<<<< HEAD
 const bcrypt = require("bcrypt");
+=======
+>>>>>>> 11c6e2f8f7ec77244adc038c3f2cb32209ebf31b
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -44,10 +47,18 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         type: DataTypes.STRING,
         allowNull: false,
+<<<<<<< HEAD
         validate: {
           isEmail: {
             args: true,
             msg: "You have entered invalid email address",
+=======
+        unique: true,
+        validate: {
+          isEmail: {
+            args: true,
+            msg: "Invalid email format",
+>>>>>>> 11c6e2f8f7ec77244adc038c3f2cb32209ebf31b
           },
           notNull: {
             msg: "Email required",
@@ -61,7 +72,10 @@ module.exports = (sequelize, DataTypes) => {
       password: {
         type: DataTypes.STRING,
         allowNull: false,
+<<<<<<< HEAD
         unique: true,
+=======
+>>>>>>> 11c6e2f8f7ec77244adc038c3f2cb32209ebf31b
         validate: {
           notNull: {
             msg: "password required",
@@ -85,10 +99,14 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "User",
       hooks: {
         beforeCreate: (User) => {
+<<<<<<< HEAD
           User.password = bcrypt.hashSync(
             User.password,
             +process.env.SALT_ROUNDS
           );
+=======
+          User.password = bcrypt.hashSync(User.password,+process.env.SALT_ROUNDS);
+>>>>>>> 11c6e2f8f7ec77244adc038c3f2cb32209ebf31b
           return User;
         },
       },
