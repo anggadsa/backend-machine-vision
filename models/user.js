@@ -82,6 +82,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "User",
+      hooks: {
+        beforeCreate: (User) => {
+          User.password = bcrypt.hashSync(User.password,+process.env.SALT_ROUNDS);
+          return User;
+        },
+      },
     }
   );
   return User;

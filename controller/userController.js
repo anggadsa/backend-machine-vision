@@ -1,3 +1,4 @@
+const { token } = require("morgan");
 const { User } = require("../models");
 
 const register = async (req, res) => {
@@ -24,15 +25,35 @@ const register = async (req, res) => {
     return res.status(400).json({
       success: false,
       message: "Your account cannot be created",
+      data: null,
     });
   }
 };
 
 const login = async (req, res) => {
   try {
+    const { username, password } = req.body;
+    const foundUser = await User.findOne({ where: { username: username } });
+    if (foundUser) {
+      // Check profile
+      const isValidPassword = bcrypt.compareSync(password, foundUser.password);
+      if (isValidPassword) {
+        const payload = {
+          id: foundUser.id,
+          username: foundUser.username,
+          email: foundUser.email,
+        };
+        const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+          expiresIn: "1h",
+        });
+      }
+    }
     return res.status(200).json({
       success: true,
       message: "Sukses mengakses endpoint",
+      data: {
+        token: token,
+      },
     });
   } catch (error) {
     return res.status(400).json({
