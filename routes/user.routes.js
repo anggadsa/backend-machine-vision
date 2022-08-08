@@ -1,8 +1,40 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const userRoute = require('../controller/userController');
+const multer = require("multer");
+const userRoute = require("../controller/userController");
+const strict = require("../misc/passport");
 
-router.post('/register', userRoute.register)
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/images");
+  },
+  filename: (req, file, cb) => {
+    const index = file.originalname.split(".").length;
+    cb(null, Date.now() + "." + file.originalname.split(".")[index - 1]);
+  },
+});
 
-module.exports = router
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (
+      file.mimetype === "image/png" ||
+      file.mimetype === "image/jpg" ||
+      file.mimetype === "image/jpeg"
+    ) {
+      return cb(null, true);
+    }
+  },
+});
 
+router.post("/login", userRoute.login);
+router.post("/logout", userRoute.logout);
+router.post("/register", upload.single("photo"), userRoute.register);
+router.get("/", userRoute.getUserId);
+router.put("/", strict, upload.single("photo"), userRoute.updateUser);
+router.put("/change-password", strict, userRoute.updatePassword);
+
+// router.post("/", restrict, upload.single("photo"), userRoute.post);
+// router.get("/public/:url", userRoute.getImage);
+
+module.exports = router;
