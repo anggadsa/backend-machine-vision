@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require("multer");
 const userRoute = require("../controller/userController");
 const strict = require("../misc/passport");
+const jwtVerify = require("../misc/jwtVerify")
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -31,7 +32,7 @@ router.post("/login", userRoute.login);
 router.post("/logout", userRoute.logout);
 router.post("/register", upload.single("photo"), userRoute.register);
 router.get("/", userRoute.getUserId);
-router.put("/", strict, upload.single("photo"), userRoute.updateUser);
+router.put("/", jwtVerify, upload.single("photo"), userRoute.updateUser);
 router.put("/change-password", strict, userRoute.updatePassword);
 
 module.exports = router;

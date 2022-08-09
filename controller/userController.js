@@ -137,7 +137,7 @@ const updateUser = async (req, res) => {
   try {
     const { name, email, username, photo } = req.body;
     const jwt_payload = req.user;
-    // console.log(req.user);
+    console.log(jwt_payload)
     const updateData = {
       name: name,
       email: email,
