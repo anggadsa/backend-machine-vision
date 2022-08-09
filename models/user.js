@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Post, {
+        foreignKey: 'userId'
+      });
+
     }
   }
   User.init(
@@ -85,6 +89,10 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "User",
       hooks: {
         beforeCreate: (User) => {
+          User.password = bcrypt.hashSync(User.password,+process.env.SALT_ROUNDS);
+          return User;
+        },
+        beforeUpdate: (User) => {
           User.password = bcrypt.hashSync(User.password,+process.env.SALT_ROUNDS);
           return User;
         },

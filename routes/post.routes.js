@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const userRoute = require("../controller/userController");
+const postRoute = require("../controller/postController");
 // const strict = require("../misc/passport");
 const strict = require("../misc/jwtVerify")
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./public/images");
+    cb(null, "./public/post");
   },
   filename: (req, file, cb) => {
     const index = file.originalname.split(".").length;
@@ -28,11 +28,6 @@ const upload = multer({
   },
 });
 
-router.post("/login", userRoute.login);
-router.post("/logout", userRoute.logout);
-router.post("/register", upload.single("photo"), userRoute.register);
-router.get("/", userRoute.getUserId);
-router.put("/", strict, upload.single("photo"), userRoute.updateUser);
-router.put("/change-password", strict, userRoute.updatePassword);
+router.post("/", strict, upload.single("image"), postRoute.createPost)
 
 module.exports = router;

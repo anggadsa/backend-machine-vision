@@ -2,6 +2,7 @@ const { token } = require("morgan");
 const { User } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+
 const register = async (req, res) => {
   try {
     const { name, username, email, password } = req.body;
@@ -53,7 +54,7 @@ const login = async (req, res) => {
           email: foundUser.email,
         };
         const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
-          expiresIn: "100s",
+          expiresIn: "15m",
         });
         return res.status(200).json({
           success: true,
@@ -181,11 +182,24 @@ const updatePassword = async (req, res) => {
   try {
     const { oldPassword, newPassword, confirmNewPassword } = req.body;
     const jwt_payload = req.user;
-    const foundUser = await User.findOne({
-      where: { username: jwt_payload.username },
-    });
+    const updateData = {
+      password: newPassword,
+    };
+    const foundUser = await User.findByPk(jwt_payload.id);
     const isValidPassword = bcrypt.compareSync(oldPassword, foundUser.password);
-    console.log(jwt_payload);
+    if(isValidPassword) {
+      await User.update(updateData, {
+        where: { username: jwt_payload.username }, individualHooks: true
+      });
+    } else {
+      throw new Error('Invalid Password')
+    }
+    console.log('Compare password = ' + isValidPassword);
+    return res.status(201).json({
+      success: true,
+      message: "Successfully Change Password",
+      data: null
+    })
   } catch (error) {
     console.log(error);
     return res.status(400).json({
